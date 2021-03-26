@@ -250,8 +250,8 @@ result = model.predict({'Input': image})
 result = np.squeeze(result)
 result = result[top:top+h, left:left+w]
 # sigmoid结果范围[0,1]，阈值取0.5
-result[result > 0.5] = 1
-result[result <= 0.5] = 0
+# result[result > 0.5] = 1
+# result[result <= 0.5] = 0
 # 显示
 result = result*255
 result = result.astype(np.uint8)
