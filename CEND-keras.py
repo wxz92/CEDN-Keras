@@ -1,8 +1,10 @@
 import tensorflow as tf
 from tensorflow.keras.models import Model
 from tensorflow.keras import backend as K
+from tensorflow.python.ops import nn_ops
 from tensorflow.python.keras.engine.base_layer import Layer
 from tensorflow.python.keras.layers import Layer, Lambda
+from tensorflow.python.keras.utils import conv_utils
 import numpy as np
 import math
 import cv2
@@ -216,10 +218,8 @@ def Create_Model(IMAGE_SIZE_HEIGHT, IMAGE_SIZE_WIDTH):
     deconv1 = tf.keras.layers.Dropout(0.5)(deconv1)
     # ---------------------pred1-contour---------------------------------
     layerName = 'pred1-contour'
-    kernel, bias = load_weight_bias(layerName)
     pred1_contour = tf.keras.layers.Conv2D(1, kernel_size=(5, 5), strides=(1, 1),
-                                           padding='same', name=layerName, trainable=False,
-                                           kernel_initializer=kernel, bias_initializer=bias)(deconv1)
+                                           padding='same', name=layerName)(deconv1)
     pred1_contour = tf.keras.layers.Activation(activation='sigmoid')(pred1_contour)
 
     """ END """
@@ -228,7 +228,7 @@ def Create_Model(IMAGE_SIZE_HEIGHT, IMAGE_SIZE_WIDTH):
     return model
 
 # 加载模型
-model = Create_Model(IMAGE_SIZE_HEIGHT, IMAGE_SIZE_WIDTH)
+model = Create_Model(224, 224)
 model.load_weights('model.h5')
 # 读图
 picPath = '000999.jpg'
